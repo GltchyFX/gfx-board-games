@@ -1,5 +1,5 @@
 #include "TicTacToeBoard.h"
-#include "../../Resources/Board/Board.h"
+#include "Board.h"
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -30,7 +30,7 @@ void TicTacToeBoard::reset()
     {
         for(int c = 0; c < col; c++)
         {
-            board[r][c] = SIZE * r + c + 1;
+            board[r][c] = (SIZE * r + c + 1) + 48;
         }
     }
 }
@@ -39,9 +39,14 @@ std::string TicTacToeBoard::toString()
 {
     std::ostringstream out;
 
-    out << Board::toString();
-
-    out << "Player " << ( (turn) ? 2 : 1 ) << " Go!";
+    for(int r = 0; r  < row; r++)
+    {
+        for(int c = 0; c < col; c++)
+        {
+            out << board[r][c] << " | ";
+        }
+        out << '\n';
+    }
 
     return out.str();
 }
@@ -49,6 +54,7 @@ std::string TicTacToeBoard::toString()
 void TicTacToeBoard::printBoard()
 {
     std::cout << toString() << std::endl;
+    std::cout << "Player " << ( (turn) ? 2 : 1) << " Go!" << std::endl;
 }
 
 void TicTacToeBoard::revertCell(unsigned int& r, unsigned int& c)
@@ -143,6 +149,7 @@ bool TicTacToeBoard::checkDiags()
         if(r == 0)
             return true;
     }
+    return false;
 }
 
 void TicTacToeBoard::userInput()
