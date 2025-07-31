@@ -1,7 +1,7 @@
 #ifndef GFX_TTT_BOARD
 #define GFX_TTT_BOARD
 
-#include "../../Resources/Board/Board.h"
+#include "Board.h"
 #include <string>
 
 class TicTacToeBoard : public Board<char>
