@@ -30,12 +30,16 @@ class Board
 
         void clear();
 
-        void reset() = 0;
+        virtual void reset() = 0;
 
         virtual std::string toString();
-    private:
+    protected:
         unsigned int row, col;
         T** board;
+
+        virtual bool checkWin() = 0;
+
+        virtual bool checkDraw() = 0;
 };
 
 #endif
