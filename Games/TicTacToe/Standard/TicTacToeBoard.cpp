@@ -57,7 +57,7 @@ void TicTacToeBoard::printBoard()
     std::cout << "Player " << ( (turn) ? 2 : 1) << " Go!" << std::endl;
 }
 
-void TicTacToeBoard::revertCell(unsigned int& r, unsigned int& c)
+void TicTacToeBoard::revertCell()
 {
     r = (userCell - 1) / SIZE;
     c = (userCell - 1) % SIZE;
@@ -65,8 +65,6 @@ void TicTacToeBoard::revertCell(unsigned int& r, unsigned int& c)
 
 void TicTacToeBoard::placeToken()
 {
-    unsigned int r, c;
-    revertCell(r, c);
     board[r][c] = (turn) ? 'O' : 'X';
 }
 
@@ -145,7 +143,7 @@ bool TicTacToeBoard::checkDiags()
     for(int r = SIZE - 2; r >= 0; r--)
     {
         if(board[r][SIZE - 1 - r] != token)
-            return false;
+            break;
         if(r == 0)
             return true;
     }
@@ -160,20 +158,18 @@ void TicTacToeBoard::userInput()
         printBoard();
         std::cout << "Enter an available cell: ";
         std::cin >> userCell;
+        revertCell();
     } while (!validInput());
 }
 
 bool TicTacToeBoard::validInput()
 {
-    unsigned int r, c;
-    revertCell(r, c);
-
     if(checkFail())
         return false;
 
     ignoreLine();
 
-    if(userCell > pow(SIZE, 2) || userCell < 0)
+    if(userCell > pow(SIZE, 2) || userCell <= 0)
     {
         std::cout << "Please enter a cell within bounds!" << std::endl;
         return false;
