@@ -13,10 +13,10 @@ class Board
         {
             setRow(r);
             setCol(c);
-            board = new T*[row];
-            for(int i = 0; i < row; i++)
+            board = new T*[rows];
+            for(int i = 0; i < rows; i++)
             {
-                board[i] = new T[col];
+                board[i] = new T[cols];
             }
         }
         Board(const Board&) = delete;
@@ -40,7 +40,7 @@ class Board
 
         virtual std::string toString();
     protected:
-        unsigned int row, col;
+        unsigned int rows, cols;
         T** board;
 
         virtual bool checkWin() = 0;
@@ -52,26 +52,26 @@ template<typename T>
 void Board<T>::setRow(int r)
 {
     assert(r > 0);
-    row = r;
+    rows = r;
 }
 
 template<typename T>
 int Board<T>::getRow()
 {
-    return row;
+    return rows;
 }
 
 template<typename T>
 void Board<T>::setCol(int c)
 {
     assert(c > 0);
-    col = c;
+    cols = c;
 }
 
 template<typename T>
 int Board<T>::getCol()
 {
-    return col;
+    return cols;
 }
 
 template<typename T>
@@ -79,8 +79,8 @@ void Board<T>::clear()
 {
     delete[] board;
     board = nullptr;
-    row = 0;
-    col = 0;
+    rows = 0;
+    cols = 0;
 }
 
 template<typename T>
@@ -88,9 +88,9 @@ std::string Board<T>::toString()
 {
     std::ostringstream out;
     
-    for(int r = 0; r < row; r++)
+    for(int r = 0; r < rows; r++)
     {
-        for(int c = 0; c < col; c++)
+        for(int c = 0; c < cols; c++)
         {
             out << board[r][c];
         }

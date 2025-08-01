@@ -1,4 +1,4 @@
-#include "TicTacToeBoard.h"
+#include "StandardTicTacToeBoard.h"
 #include <iostream>
 
 void play();
@@ -20,7 +20,7 @@ int main(){
 
 void play()
 {
-    TicTacToeBoard game;
+    StandardTicTacToeBoard game;
 
     int result = game.game();
 
