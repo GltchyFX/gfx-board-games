@@ -10,8 +10,7 @@ class TicTacToeBoard : public Board<char>
         TicTacToeBoard()
         :
             Board(3, 3),
-            turn{false},
-            draw{false}
+            turn{false}
         {
             reset();
         }
@@ -26,15 +25,15 @@ class TicTacToeBoard : public Board<char>
         void reset() override;
 
         std::string toString() override;
-    private:
-        unsigned int userCell;
+    protected:
+        unsigned int userCell, r, c;
         const unsigned int SIZE = 3;
         //turn == true is Player 2; turn == false is Player 1
-        bool turn, draw;
+        bool turn;
 
         void printBoard();
 
-        void revertCell(unsigned int& r, unsigned int& c);
+        void revertCell();
 
         void placeToken();
 

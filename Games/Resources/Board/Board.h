@@ -79,6 +79,8 @@ void Board<T>::clear()
 {
     delete[] board;
     board = nullptr;
+    row = 0;
+    col = 0;
 }
 
 template<typename T>
