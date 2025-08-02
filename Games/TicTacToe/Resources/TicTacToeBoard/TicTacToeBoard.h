@@ -12,9 +12,9 @@ template<typename T>
 class TicTacToeBoard : public Board<T>
 {
     public:
-        TicTacToeBoard(int r, int c)
+        TicTacToeBoard(int rc)
         :
-            Board<T>(r, c),
+            Board<T>(rc, rc),
             turn{false}
         {
         }
@@ -28,7 +28,7 @@ class TicTacToeBoard : public Board<T>
 
         virtual void reset() = 0;
 
-        std::string toString() override;
+        virtual std::string toString();
     protected:
         unsigned int userCell, r, c;
         //turn == true is Player 2; turn == false is Player 1
@@ -38,7 +38,7 @@ class TicTacToeBoard : public Board<T>
 
         void revertCell();
 
-        void placeToken();
+        virtual void placeToken() = 0;
 
         void turnFlip();
 
@@ -86,23 +86,6 @@ void TicTacToeBoard<T>::play()
 }
 
 template<typename T>
-std::string TicTacToeBoard<T>::toString()
-{
-    std::ostringstream out;
-
-    for(int r = 0; r  < Board<T>::rows; r++)
-    {
-        for(int c = 0; c < Board<T>::cols; c++)
-        {
-            out << Board<T>::board[r][c] << " | ";
-        }
-        out << '\n';
-    }
-
-    return out.str();
-}
-
-template<typename T>
 void TicTacToeBoard<T>::printBoard()
 {
     std::cout << toString() << std::endl;
@@ -117,9 +100,20 @@ void TicTacToeBoard<T>::revertCell()
 }
 
 template<typename T>
-void TicTacToeBoard<T>::placeToken()
+std::string TicTacToeBoard<T>::toString()
 {
-    Board<T>::board[r][c] = (turn) ? 'O' : 'X';
+    std::ostringstream out;
+
+    for(int r = 0; r  < Board<T>::rows; r++)
+    {
+        for(int c = 0; c < Board<T>::cols; c++)
+        {
+            out << Board<T>::board[r][c] << " | ";
+        }
+        out << '\n';
+    }
+
+    return out.str();
 }
 
 template<typename T>
@@ -143,10 +137,10 @@ bool TicTacToeBoard<T>::checkDraw()
 template<typename T>
 bool TicTacToeBoard<T>::checkRows()
 {
-    char token;
+    T token;
     for(int r = 0; r < Board<T>::rows; r++)
     {
-        if(Board<T>::board[r][0] != 'X' && Board<T>::board[r][0] != 'O')
+        if( (Board<T>::board[r][0] != 'X' && Board<T>::board[r][0] != -1) && (Board<T>::board[r][0] != 'O' && Board<T>::board[r][0] != 0) )
             continue;
         token = Board<T>::board[r][0];
         for(int c = 1; c < Board<T>::cols; c++)
@@ -163,10 +157,10 @@ bool TicTacToeBoard<T>::checkRows()
 template<typename T>
 bool TicTacToeBoard<T>::checkCols()
 {
-    char token;
+    T token;
     for(int c = 0; c < Board<T>::cols; c++)
     {
-        if(Board<T>::board[0][c] != 'X' && Board<T>::board[0][c] != 'O')
+        if( (Board<T>::board[0][c] != 'X' && Board<T>::board[0][c] != -1) && (Board<T>::board[0][c] != 'O' && Board<T>::board[0][c] != 0) )
             continue;
         token = Board<T>::board[0][c];
         for(int r = 1; r < Board<T>::rows; r++)
@@ -183,9 +177,9 @@ bool TicTacToeBoard<T>::checkCols()
 template<typename T>
 bool TicTacToeBoard<T>::checkDiags()
 {
-    char token;
+    T token;
     //top-left to bottom-right
-    if(Board<T>::board[0][0] != 'X' && Board<T>::board[0][0] != 'O')
+    if( (Board<T>::board[0][0] != 'X' && Board<T>::board[0][0] != -1) && (Board<T>::board[0][0] != 'O' && Board<T>::board[0][0] != 0) )
         goto bottomtop;
     token = Board<T>::board[0][0];
     for(int rc = 1; rc < Board<T>::rows; rc++)
@@ -197,7 +191,7 @@ bool TicTacToeBoard<T>::checkDiags()
     }
     //bottom-left to top-right
     bottomtop:
-    if(Board<T>::board[Board<T>::rows - 1][0] != 'X' && Board<T>::board[Board<T>::rows - 1][0] != 'O')
+    if( (Board<T>::board[Board<T>::rows - 1][0] != 'X' && Board<T>::board[Board<T>::rows - 1][0] != -1) && (Board<T>::board[Board<T>::rows - 1][0] != 'O' && Board<T>::board[Board<T>::rows - 1][0] != 0) )
         return false;
     token = Board<T>::board[Board<T>::rows - 1][0];
     for(int r = Board<T>::rows - 2; r >= 0; r--)
