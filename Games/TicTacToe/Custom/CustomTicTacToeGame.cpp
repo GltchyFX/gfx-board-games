@@ -1,15 +1,19 @@
-#include "StandardTicTacToeBoard.h"
+#include "CustomTicTacToeBoard.h"
 #include <iostream>
 
-void play();
+void play(int);
 
-int main(){
+int main()
+{
     char playAgain;
-    
+    int size;
+
     do
     {
         system("clear");
-        play();
+        std::cout << "What size board (Enter one number): ";
+        std::cin >> size;
+        play(size);
         std::cout << "Play again? (Y/N) ";
         std::cin >> playAgain;
     } while ((char)std::tolower(playAgain) == 'y');
@@ -19,9 +23,9 @@ int main(){
     return 0;
 }
 
-void play()
+void play(int size)
 {
-    StandardTicTacToeBoard game;
+    CustomTicTacToeBoard game(size);
 
     int result = game.game();
 

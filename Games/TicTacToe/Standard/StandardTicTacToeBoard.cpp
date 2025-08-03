@@ -10,3 +10,8 @@ void StandardTicTacToeBoard::reset()
         }
     }
 }
+
+void StandardTicTacToeBoard::placeToken()
+{
+    board[r][c] = (turn) ? 'O' : 'X';
+}

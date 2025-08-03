@@ -2,7 +2,6 @@
 #define GFX_STD_TTT_BOARD
 
 #include "TicTacToeBoard.h"
-#include "Board.h"
 #include <string>
 
 class StandardTicTacToeBoard : public TicTacToeBoard<char>
@@ -10,7 +9,7 @@ class StandardTicTacToeBoard : public TicTacToeBoard<char>
     public:
         StandardTicTacToeBoard()
         :
-            TicTacToeBoard(3, 3)
+            TicTacToeBoard(3)
         {
             reset();
         }
@@ -19,6 +18,8 @@ class StandardTicTacToeBoard : public TicTacToeBoard<char>
         virtual ~StandardTicTacToeBoard() = default;
 
         void reset() override;
+    private:
+        void placeToken() override;
 };
 
 #endif
