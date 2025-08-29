@@ -40,6 +40,10 @@ class TicTacToeBoard : public Board<T>
 
         virtual void placeToken() = 0;
 
+        bool verifyToken();
+
+        bool verifyToken(int, int);
+
         void turnFlip();
 
         bool checkWin() override;
@@ -117,6 +121,28 @@ std::string TicTacToeBoard<T>::toString()
 }
 
 template<typename T>
+bool TicTacToeBoard<T>::verifyToken()
+{
+    return verifyToken(r, c);
+}
+
+template<typename T>
+bool TicTacToeBoard<T>::verifyToken(int row, int col)
+{
+    T token = Board<T>::board[row][col];
+    switch(token)
+    {
+        case 'X':
+        case 'O':
+        case -1:
+        case 0:
+            return true;
+        default:
+            return false;
+    }
+}
+
+template<typename T>
 void TicTacToeBoard<T>::turnFlip()
 {
     turn = !turn;
@@ -140,7 +166,7 @@ bool TicTacToeBoard<T>::checkRows()
     T token;
     for(int r = 0; r < Board<T>::rows; r++)
     {
-        if( (Board<T>::board[r][0] != 'X' && Board<T>::board[r][0] != -1) && (Board<T>::board[r][0] != 'O' && Board<T>::board[r][0] != 0) )
+        if( !verifyToken(r, 0)/*(Board<T>::board[r][0] != 'X' && Board<T>::board[r][0] != -1) && (Board<T>::board[r][0] != 'O' && Board<T>::board[r][0] != 0)*/ )
             continue;
         token = Board<T>::board[r][0];
         for(int c = 1; c < Board<T>::cols; c++)
@@ -160,7 +186,7 @@ bool TicTacToeBoard<T>::checkCols()
     T token;
     for(int c = 0; c < Board<T>::cols; c++)
     {
-        if( (Board<T>::board[0][c] != 'X' && Board<T>::board[0][c] != -1) && (Board<T>::board[0][c] != 'O' && Board<T>::board[0][c] != 0) )
+        if( !verifyToken(0, c)/*(Board<T>::board[0][c] != 'X' && Board<T>::board[0][c] != -1) && (Board<T>::board[0][c] != 'O' && Board<T>::board[0][c] != 0)*/ )
             continue;
         token = Board<T>::board[0][c];
         for(int r = 1; r < Board<T>::rows; r++)
@@ -179,7 +205,7 @@ bool TicTacToeBoard<T>::checkDiags()
 {
     T token;
     //top-left to bottom-right
-    if( (Board<T>::board[0][0] != 'X' && Board<T>::board[0][0] != -1) && (Board<T>::board[0][0] != 'O' && Board<T>::board[0][0] != 0) )
+    if( !verifyToken(0, 0)/*(Board<T>::board[0][0] != 'X' && Board<T>::board[0][0] != -1) && (Board<T>::board[0][0] != 'O' && Board<T>::board[0][0] != 0)*/ )
         goto bottomtop;
     token = Board<T>::board[0][0];
     for(int rc = 1; rc < Board<T>::rows; rc++)
@@ -191,7 +217,7 @@ bool TicTacToeBoard<T>::checkDiags()
     }
     //bottom-left to top-right
     bottomtop:
-    if( (Board<T>::board[Board<T>::rows - 1][0] != 'X' && Board<T>::board[Board<T>::rows - 1][0] != -1) && (Board<T>::board[Board<T>::rows - 1][0] != 'O' && Board<T>::board[Board<T>::rows - 1][0] != 0) )
+    if( !verifyToken(Board<T>::rows - 1, 0)/*(Board<T>::board[Board<T>::rows - 1][0] != 'X' && Board<T>::board[Board<T>::rows - 1][0] != -1) && (Board<T>::board[Board<T>::rows - 1][0] != 'O' && Board<T>::board[Board<T>::rows - 1][0] != 0)*/ )
         return false;
     token = Board<T>::board[Board<T>::rows - 1][0];
     for(int r = Board<T>::rows - 2; r >= 0; r--)
@@ -231,7 +257,7 @@ bool TicTacToeBoard<T>::validInput()
         return false;
     }
 
-    if(Board<T>::board[r][c] == 'X' || Board<T>::board[r][c] == 'O')
+    if(verifyToken())
     {
         std::cout << "Please enter an available cell!" << std::endl;
         return false;
