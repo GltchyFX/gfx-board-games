@@ -54,6 +54,10 @@ class TicTacToeBoard : public Board<T>
 
         bool checkCols();
 
+        bool checkNegativeDiag();
+
+        bool checkPositiveDiag();
+
         bool checkDiags();
 
         void userInput();
@@ -203,27 +207,39 @@ bool TicTacToeBoard<T>::checkCols()
 template<typename T>
 bool TicTacToeBoard<T>::checkDiags()
 {
+    return ( checkNegativeDiag() || checkPositiveDiag() );
+}
+
+//top-left to bottom-right
+template<typename T>
+bool TicTacToeBoard<T>::checkNegativeDiag()
+{
     T token;
-    //top-left to bottom-right
     if( !verifyToken(0, 0) )
-        goto bottomtop;
+        return false;
     token = Board<T>::board[0][0];
     for(int rc = 1; rc < Board<T>::rows; rc++)
     {
         if(Board<T>::board[rc][rc] != token)
-            break;
+            return false;
         if(rc == Board<T>::rows - 1)
             return true;
     }
-    //bottom-left to top-right
-    bottomtop:
+    return false;
+}
+
+//bottom-left to top-right
+template<typename T>
+bool TicTacToeBoard<T>::checkPositiveDiag()
+{
+    T token;    
     if( !verifyToken(Board<T>::rows - 1, 0) )
         return false;
     token = Board<T>::board[Board<T>::rows - 1][0];
     for(int r = Board<T>::rows - 2; r >= 0; r--)
     {
         if(Board<T>::board[r][Board<T>::rows - 1 - r] != token)
-            break;
+            return false;
         if(r == 0)
             return true;
     }
